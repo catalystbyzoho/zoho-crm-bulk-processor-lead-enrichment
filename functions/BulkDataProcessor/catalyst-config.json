@@ -1,0 +1,16 @@
+{
+	"deployment": {
+		"name": "BulkDataProcessor",
+		"stack": "java17",
+		"type": "event",
+		"env_variables": {
+			"CLIENT_SECRET": "ad64a2aaf4338938076f67cf3b007e32cd045361d5",
+			"CODELIB_SECRET_KEY": "1234567890",
+			"CLIENT_ID": "1000.CO1PKPK0H9UCUAEQ1R8FGVVYKX70IX",
+			"REFRESH_TOKEN": "1000.4c633f2c7a03be66bac9b6f6d873a4ea.061cb67ee9d34b51d52388427a67da61"
+		}
+	},
+	"execution": {
+		"main": "BulkDataProcessor"
+	}
+}
