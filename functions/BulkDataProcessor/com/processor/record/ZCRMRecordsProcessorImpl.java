@@ -94,7 +94,7 @@ public class ZCRMRecordsProcessorImpl implements ZCRMRecordsProcessor {
 			}
 
 			if (countryCode != null) {
-				data.put("Country_Code", countryCode);
+				data.put("Country", countryCode);
 			}
 
 			data.put("Lead_Score_Value", leadScore);
