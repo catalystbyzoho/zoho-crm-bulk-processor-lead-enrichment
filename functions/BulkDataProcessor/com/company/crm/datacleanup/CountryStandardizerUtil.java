@@ -6,12 +6,14 @@ import java.util.Map;
 
 public class CountryStandardizerUtil {
 
-    private static final Map<String, String> COUNTRY_MAP = new HashMap<>();
+    private static final Map<String, String> COUNTRY_MAP =
+            new HashMap<>();
 
     static {
         // India
         COUNTRY_MAP.put("india", "IN");
         COUNTRY_MAP.put("ind", "IN");
+        COUNTRY_MAP.put("in", "IN");
         COUNTRY_MAP.put("+91", "IN");
 
         // USA
@@ -27,13 +29,18 @@ public class CountryStandardizerUtil {
         COUNTRY_MAP.put("+44", "UK");
     }
 
+    private CountryStandardizerUtil() {}
+
     public static String standardize(String rawCountry) {
 
         if (rawCountry == null || rawCountry.trim().isEmpty()) {
             return null;
         }
 
-        String key = rawCountry.trim().toLowerCase(Locale.ENGLISH);
-        return COUNTRY_MAP.getOrDefault(key, null);
+        String key = rawCountry
+                .trim()
+                .toLowerCase(Locale.ENGLISH);
+
+        return COUNTRY_MAP.get(key);
     }
 }

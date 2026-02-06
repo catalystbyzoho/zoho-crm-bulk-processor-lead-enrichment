@@ -2,7 +2,9 @@ package com.company.crm.datacleanup;
 
 public class LeadScoringUtil {
 
-    public static int calculateLeadScore(
+    private LeadScoringUtil() {}
+
+    public static Integer calculateLeadScore(
             String jobTitle,
             Integer companySize,
             Integer lastActivityDays,
@@ -10,26 +12,24 @@ public class LeadScoringUtil {
 
         int score = 0;
 
-        // Decision Maker
         if (jobTitle != null) {
             String title = jobTitle.toLowerCase();
-            if (title.contains("ceo") || title.contains("cto")
-                    || title.contains("director") || title.contains("vp")) {
+            if (title.contains("ceo")
+                    || title.contains("cto")
+                    || title.contains("director")
+                    || title.contains("vp")) {
                 score += 25;
             }
         }
 
-        // Company Size
         if (companySize != null && companySize >= 200) {
             score += 20;
         }
 
-        // Recency
         if (lastActivityDays != null && lastActivityDays <= 7) {
             score += 15;
         }
 
-        // Engagement
         if (webEngagementScore != null && webEngagementScore >= 70) {
             score += 10;
         }
@@ -37,20 +37,28 @@ public class LeadScoringUtil {
         return score;
     }
 
-    public static String deriveSegment(int score) {
+    public static String deriveSegment(Integer score) {
+        if (score == null) {
+            return null;
+        }
         if (score >= 70) return "Hot";
         if (score >= 40) return "Warm";
         return "Cold";
     }
 
     public static String derivePriority(String segment) {
+        if (segment == null) {
+            return null;
+        }
         switch (segment) {
             case "Hot":
                 return "High";
             case "Warm":
                 return "Medium";
-            default:
+            case "Cold":
                 return "Low";
+            default:
+                return null;
         }
     }
 }

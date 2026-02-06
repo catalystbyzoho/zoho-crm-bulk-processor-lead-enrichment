@@ -37,10 +37,11 @@ public class ZCRMRecordsProcessorImpl implements ZCRMRecordsProcessor {
 			 */
 			String rawMobile = getString(data.get("Mobile"));
 			String rawCountry = getString(data.get("Country"));
-			String jobTitle = getString(data.get("Job_Title"));
-			Integer companySize = getInteger(data.get("Company_Size"));
+			String jobTitle = getString(data.get("Designation"));
+			Integer companySize = getInteger(data.get("No_of_Employees"));
 			Integer lastActivityDays = getInteger(data.get("Last_Activity_Days"));
 			Integer webEngagementScore = getInteger(data.get("Web_Engagement_Score"));
+			// Last_Name,Company,Mobile,Country,Designation,No_of_Employees,Web_Engagement_Score,Lead_Score_Value
 
 			/*
 			 * ------------------------
@@ -54,8 +55,12 @@ public class ZCRMRecordsProcessorImpl implements ZCRMRecordsProcessor {
 			 * 3️⃣ Mobile Normalization
 			 * ------------------------
 			 */
-			Optional<String> normalizedMobile = PhoneNormalizerUtil.normalizeToE164(rawMobile, countryCode);
+			String normalizedMobile = PhoneNormalizerUtil.normalizeToE164(rawMobile, countryCode);
+			boolean phoneValid = normalizedMobile != null;
 
+			if (phoneValid) {
+				data.put("Mobile", normalizedMobile);
+			}
 			/*
 			 * ------------------------
 			 * 4️⃣ Lead Scoring
@@ -76,7 +81,7 @@ public class ZCRMRecordsProcessorImpl implements ZCRMRecordsProcessor {
 			 * ------------------------
 			 */
 			String dataQualityStatus = DataQualityUtil.determineStatus(
-					normalizedMobile.isPresent(),
+					phoneValid,
 					countryCode != null);
 
 			/*
@@ -84,15 +89,15 @@ public class ZCRMRecordsProcessorImpl implements ZCRMRecordsProcessor {
 			 * 6️⃣ Write Back to Record
 			 * ------------------------
 			 */
-			if (normalizedMobile.isPresent()) {
-				data.put("Mobile", normalizedMobile.get());
+			if (normalizedMobile != null) {
+				data.put("Mobile", normalizedMobile);
 			}
 
 			if (countryCode != null) {
 				data.put("Country_Code", countryCode);
 			}
 
-			data.put("Lead_Score", leadScore);
+			data.put("Lead_Score_Value", leadScore);
 			data.put("Lead_Segment", leadSegment);
 			data.put("Sales_Priority", salesPriority);
 			data.put("Data_Quality_Status", dataQualityStatus);

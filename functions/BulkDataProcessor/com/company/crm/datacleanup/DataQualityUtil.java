@@ -2,16 +2,22 @@ package com.company.crm.datacleanup;
 
 public class DataQualityUtil {
 
-    public static String determineStatus(
-            boolean phoneValid,
-            boolean countryValid) {
+    private DataQualityUtil() {}
 
-        if (phoneValid && countryValid) {
+    public static String determineStatus(
+            Boolean phoneValid,
+            Boolean countryValid) {
+
+        if (Boolean.TRUE.equals(phoneValid)
+                && Boolean.TRUE.equals(countryValid)) {
             return "Clean";
         }
-        if (!phoneValid && !countryValid) {
+
+        if (Boolean.FALSE.equals(phoneValid)
+                && Boolean.FALSE.equals(countryValid)) {
             return "Critical";
         }
+
         return "Needs Review";
     }
 }
